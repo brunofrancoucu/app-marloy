@@ -6,13 +6,13 @@ import os
 import jwt
 from dotenv import load_dotenv
 from datetime import datetime
-from collections import namedtuple
 from pydantic import BaseModel
+
+from sql import models
 import dal.crud as crud
 from exceptions import InternalException
 
 load_dotenv()  # Cargar variables de entorno desde .env
-User = namedtuple("User", ["correo", "contraseña", "es_administrador"])
 
 class AuthPayload(BaseModel):
     """
@@ -34,12 +34,13 @@ def check_creds(correo, password):
     TODO: Computa hash de contraseña y compara con hash almacenado en base de datos.
     """
     # (correo, contraseña, es_administrador)
-    query = crud.get_entry("login", "correo", correo)
-    if not query or len(query) == 0:
+    user = crud.get_entry("login", "correo", correo, models.Login)
+    # if not query or len(query) == 0:
+    if not user:
         raise InternalException(f"Usuario: {correo} no existe.", 400, f"Error al autenticar credenciales de {correo}:", "auth.check_creds")
     
-    user = User(*query[0])
-    if user.contraseña != password:
+    # user = User(*query[0])
+    if user.pwd_hash != password:
         raise InternalException(f"Contraseña incorrecta.", 401, f"Error al autenticar credenciales de {correo}:", "auth.check_creds")
     
     # Credenciales correctas, generar JWT
@@ -60,20 +61,18 @@ def verify(token) -> AuthPayload:
 
     try: 
         payload = jwt.decode(token[7:], os.getenv("JWT_SECRET", "jwt_pwd"), algorithms=[os.getenv("JWT_ALGORITHM")])
-        latest_user = crud.get_entry("login", "correo", payload.get("correo")) # update payload
+        latest_user = crud.get_entry("login", "correo", payload.get("correo"), models.Login) # update paylodd
     except Exception as e:
         raise InternalException("Token incorrecto, re-inicie sesion.", 401, f"Token expirado para {token}:", "auth.verify")
     
-    if not latest_user or len(latest_user) == 0:
+    if not latest_user:
         raise InternalException(f"Usuario {payload.get("correo")} no existe o jwt desactualizado.", 400, f"Error al autenticar token, usuaria <=> payload de {payload.get("correo")}:", "auth.verify")
 
     if int(payload.get("expires")) < datetime.now().timestamp():
         raise InternalException(f"Token incorrecto, re-inicie sesion.", 401, f"Token expirado para {payload.get("correo")}:", "auth.verify")
     
-    user = User(*latest_user[0])
-
     # Verificado, Re generar jwt token (expiración)    
-    return gen_jwt(user.correo, user.contraseña)
+    return gen_jwt(latest_user.correo, latest_user.pwd_hash)
 
 def gen_jwt(correo, contraseña) -> AuthPayload:
     """
@@ -81,16 +80,16 @@ def gen_jwt(correo, contraseña) -> AuthPayload:
     Verifica credenciales y genera un token JWT si son correctas.
     Devuelve su payload
     """
-    query = crud.get_entry("login", "correo", correo) 
+    user = crud.get_entry("login", "correo", correo, models.Login)
     
-    if not query or len(query) == 0:
+    # if not query or len(query) == 0:
+    if not user:
         raise InternalException(f"Usuario no existe para {correo}.", 400, f"Error al generar token {correo} {contraseña[:2]}", "auth.gen_jwt")
     
     if check_creds(correo, contraseña) is False:
         raise InternalException(f"Credenciales incorrectas para {correo}.", 401, f"Error al generar token {correo} {contraseña[:2]}", "auth.gen_jwt")
 
     # Generar token para usuario en db
-    user = User(*query[0])
     payload = {
         "correo": user.correo,
         "es_administrador": user.es_administrador,

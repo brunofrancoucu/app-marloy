@@ -17,7 +17,7 @@ async def update_proveedor(req: Request, entry: models.Proveedor):
         raise InternalException("Operacion requiere rol de administrador.", 401, f"No admin en {req.path}, {entry}", "PUT:/proveedor")
     
     # Actualizar proveedor
-    return crud.update("proveedores", entry)
+    return crud.update("proveedores", entry, models.Proveedor)
 
 @router.put("/maquina") # UPDATE maquina
 async def update_maquina(req: Request, entry: models.Maquina):
@@ -26,7 +26,7 @@ async def update_maquina(req: Request, entry: models.Maquina):
         raise InternalException("Operacion requiere rol de administrador.", 401, f"No admin en {req.path}, {entry}", "PUT:/maquina")
     
     # Actualizar maquina
-    return crud.update("maquinas", entry)
+    return crud.update("maquinas", entry, models.Maquina)
 
 @router.put("/tecnico") # UPDATE tecnico
 async def update_tecnico(req: Request, entry: models.Tecnico):
@@ -35,19 +35,19 @@ async def update_tecnico(req: Request, entry: models.Tecnico):
         raise InternalException("Operacion requiere rol de administrador.", 401, f"No admin en {req.path}, {entry}", "PUT:/tecnico")
     
     # Actualizar tecnico
-    return crud.update("tecnicos", entry)
+    return crud.update("tecnicos", entry, models.Tecnico)
 
 @router.put("/insumo") # UPDATE insumo
 async def update_insumo(_: Request, entry: models.Insumo):
     # Actualizar insumo
-    return crud.update("insumos", entry)
+    return crud.update("insumos", entry, models.Insumo)
 
 @router.put("/cliente") # UPDATE cliente
 async def update_cliente(_: Request, entry: models.Cliente):
     # Actualizar cliente
-    return crud.update("clientes", entry)
+    return crud.update("clientes", entry, models.Cliente)
 
 @router.put("/mantenimiento") # UPDATE mantenimiento
 async def update_mantenimiento(_: Request, entry: models.Mantenimiento):
     # Actualizar mantenimiento
-    return crud.update("mantenimientos", entry)
+    return crud.update("mantenimientos", entry, models.Mantenimiento)
