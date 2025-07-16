@@ -1,11 +1,15 @@
 """
 Operaciones CRUD (funciones utilitarias)
 """
+from typing import Type, List, TypeVar
 import dal.utils as utils
+from pydantic import BaseModel
+
+T = TypeVar("T", bound=BaseModel)
 
 # Create
 
-def create(table: str, full_entry):
+def create(table: str, full_entry, model: Type[T]) -> T:
     """
     Crear una nuevo registro en tabla
     devuelve el registro creado
@@ -23,46 +27,46 @@ def create(table: str, full_entry):
     utils.db_cursor(op, "WRITE")
     
     # Return affected / modified record row
-    return get_entry(table, uIdCol, uIdVal)
+    return get_entry(table, uIdCol, uIdVal, model)
 
 # Read
 
-def get_table(table: str):
+def get_table(table: str, model: Type[T]) -> List[T]:
     """
     Funcion utilitaria, get completo para una tabla (SELECT *)
     Simplifica: endpoints simples, ej. https://localhost:8000/clientes
     """
-    results = []
+    # cols = list(model.model_fields.keys()) # Type
     
     def op(cursor):
         sql = f"SELECT * FROM gestion_comercial.{utils.san(table)}"
         cursor.execute(sql)
-        for row in cursor:
-            results.append(row)
+        
+        return [model(**row) for row in cursor.fetchall()]
 
-    utils.db_cursor(op)
-    return results
+    return utils.db_cursor(op)
 
-def get_entry(table: str, col: str, value):
+def get_entry(table: str, col: str, uId, model: Type[T]) -> T:
     """
     Funcion utilitaria, data point especifico (row / record / entry)
     Dado una tabla, propiedad, y valor
     Simplifica: endpoints individuales simples, ej. https://localhost:8000/cliente/123456
     """
-    results = []
+    # cols = list(model.model_fields.keys()) # Type
     
     def op(cursor):
         sql = f"SELECT * FROM gestion_comercial.{utils.san(table)} WHERE {utils.san(col)} = %s"
-        cursor.execute(sql, (value,))
-        for row in cursor:
-            results.append(row)
+        cursor.execute(sql, (uId,))
+        rows = cursor.fetchall()
 
-    utils.db_cursor(op)
-    return results
+        return model(**rows[0]) if rows else None
+        # alt: get entries[] on !PK
+
+    return utils.db_cursor(op)
 
 # Update
 
-def update(table: str, full_entry):
+def update(table: str, full_entry, model: Type[T]) -> T:
     """
     Para un uId actualizar propiedades
     Devuelve el registro actualizado
@@ -79,7 +83,7 @@ def update(table: str, full_entry):
     utils.db_cursor(op, "WRITE")
     
     # Return affected / modified record row
-    return get_entry(table, uIdCol, uIdVal)
+    return get_entry(table, uIdCol, uIdVal, model)
 
 # Delete
 

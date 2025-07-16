@@ -10,14 +10,14 @@ Extractos de todas las secciones, requisito previos: [Instalacion Backend](#inst
 
 ```bash
 # Terminal 1 (frontend)
-cd Client
+cd backend
 npm run dev
 ```
 
 Asumiendo contenedor `mysql-server` ejecutandose de fondo [docker-compose](#ubuntu)
 ```bash
 # Terminal 2 (backend: api)
-cd Server
+cd frontend
 source venv/bin/activate
 uvicorn main:app --reload
 ```
@@ -56,7 +56,7 @@ GET (Queries) / PUT (Updates) / POST (CREATES)
 Si exitoso, responde con el recurso actualizado. Para queries singulares / unitarias el JSON de respuesta contiene una misma estructura que para queries con multiples entries / records (tablas / reportes).
 
 ## **Instalacion:**
-Dentro del contexto de ejecucion `./Server` (definimos pasos de instalacion). Utilizamos version de **python 3.13+** (syntaxis en codebase). Generamos la base de datos con  `populate.py` (ejecutando linea por linea de los archivos .sql)
+Dentro del contexto de ejecucion `./frontend` (definimos pasos de instalacion). Utilizamos version de **python 3.13+** (syntaxis en codebase). Generamos la base de datos con  `populate.py` (ejecutando linea por linea de los archivos .sql)
 
 ### Ubuntu
 ```bash
@@ -146,9 +146,9 @@ Ejecutamos comandos SQL, `USE gestion_comercial;` (previamente)
 
 ### Comunicacion con la API:
 
-1. Queries a rutas publicas [<small>Comandos CURL</small>](/Server/README.md#endpoints-publicos)
-2. Autenticar usuario, get token [<small>Comandos CURL</small>](/Server/README.md#autenticacion)
-3. Updates y rutas privadas [<small>Comandos CURL</small>](/Server/README.md#endpoints-privados)
+1. Queries a rutas publicas [<small>Comandos CURL</small>](/frontend/README.md#endpoints-publicos)
+2. Autenticar usuario, get token [<small>Comandos CURL</small>](/frontend/README.md#autenticacion)
+3. Updates y rutas privadas [<small>Comandos CURL</small>](/frontend/README.md#endpoints-privados)
 
 # Anexo
 

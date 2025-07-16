@@ -22,7 +22,7 @@ def db_cursor(crud_op, op = "READ"):
         auth_plugin='mysql_native_password',
         port=3307
     )
-    cursor = conexion.cursor()
+    cursor = conexion.cursor(dictionary=True)
     try:
         result = crud_op(cursor)
         cursor.close()
