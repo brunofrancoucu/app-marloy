@@ -6,16 +6,15 @@ import os
 import jwt
 from dotenv import load_dotenv
 from datetime import datetime
-import dal.crud as crud
 from collections import namedtuple
-from dataclasses import dataclass
+from pydantic import BaseModel
+import dal.crud as crud
 from exceptions import InternalException
 
 load_dotenv()  # Cargar variables de entorno desde .env
 User = namedtuple("User", ["correo", "contraseña", "es_administrador"])
 
-@dataclass
-class AuthPayload:
+class AuthPayload(BaseModel):
     """
     Resultado de autenticación (no autenticado por defecto)
     """
@@ -52,7 +51,7 @@ def get_creds(correo, password):
     """
     return password
     
-def verify(token):
+def verify(token) -> AuthPayload:
     """
     Verifica y revalida el token JWT => devuelve su payload
     """
@@ -72,18 +71,11 @@ def verify(token):
         raise InternalException(f"Token incorrecto, re-inicie sesion.", 401, f"Token expirado para {payload.get("correo")}:", "auth.verify")
     
     user = User(*latest_user[0])
-    # Re generar jwt token
-    token = gen_jwt(user.correo, user.contraseña)
-    
-    # Autenticación exitosa
-    return AuthPayload(
-        jwt=token,
-        is_auth=True,
-        es_administrador=user.es_administrador,
-        correo=user.correo
-    )
 
-def gen_jwt(correo, contraseña):
+    # Verificado, Re generar jwt token (expiración)    
+    return gen_jwt(user.correo, user.contraseña)
+
+def gen_jwt(correo, contraseña) -> AuthPayload:
     """
     Genera un token JWT para un usuario.
     Verifica credenciales y genera un token JWT si son correctas.
