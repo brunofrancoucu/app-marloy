@@ -2,7 +2,10 @@
 API server - FastAPI (Backend entry point)
 Estructura de api: `./Consigna.pdf`
 """
+import os
 from fastapi import FastAPI, Request # type: ignore
+from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 from exceptions import InternalException
 import openapi as custom_openapi
@@ -18,12 +21,39 @@ app.openapi = lambda: custom_openapi.custom(app)
 app.middleware("http")(middleware.access)
 app.middleware("http")(middleware.exceptions)
 
-# Autenticacion y usuarios
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
+# Autenticacion, manejo de usuarios, identidad y acceso
+# app.include_router(auth.router)
+
+# TODO: samesite, secure, httponly .domain.tld (api y fe)
 @app.post("/login")
-async def login(req: models.Login):
-    payload = auth.gen_jwt(req.correo, req.pwd_hash)
-    return payload # Devolver token JWT
+async def login(_: Request, body: models.Login):
+    payload = auth.gen_jwt(body.correo, body.pwd_hash)
+    res = JSONResponse(payload.model_dump())
+    res.set_cookie(
+        key="jwtToken", value=payload.jwt, 
+        httponly=True, secure=True, samesite="Strict",
+        max_age=int(os.getenv("JWT_EXPIRATION", 60 * 60 * 12))
+    ) # 127.0.0.1
+    return res # Devolver token JWT
+
+@app.post("/logout")
+async def logout():
+    res = JSONResponse({"message": "Logout exitoso"})
+    res.delete_cookie("jwtToken")
+    return res
 
 @app.post("/register")
 async def register(_: Request, body: models.Login):
