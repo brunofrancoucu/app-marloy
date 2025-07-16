@@ -12,8 +12,7 @@ import dal.auth as auth
 # Regex (url path params ej. tecnico/{uId}) (rutas publicas)
 API_PUBLIC_PATHS = [
     re.compile(r"^/docs$"),
-    re.compile(r"^/login$"),
-    re.compile(r"^/register$"),
+    re.compile(r"^/user/.*$"),
     re.compile(r"^/tecnicos$"),
     re.compile(r"^/tecnico/\d+$"), # solo numeros
     re.compile(r"^/openapi\.json$")

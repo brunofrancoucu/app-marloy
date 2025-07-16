@@ -6,7 +6,7 @@ const Logout: React.FC = () => {
   const router = useRouter()
 
   const logout = async () => {
-    const res = await fetch("http://127.0.0.1:8000/logout", {
+    const res = await fetch("http://127.0.0.1:8000/user/logout", {
       credentials: "include",
       method: "POST",
     })
