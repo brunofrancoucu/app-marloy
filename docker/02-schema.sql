@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS insumos(
 CREATE TABLE IF NOT EXISTS clientes(
     id_cliente INT PRIMARY KEY,
     nombre VARCHAR(20),
-    dirección VARCHAR(50),
+    direccion VARCHAR(50),
     telefono INT,
     correo VARCHAR(50)
 );
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS maquinas(
     id_maquina INT PRIMARY KEY,
     modelo varchar(20),
     id_cliente INT NOT NULL,
-    dirección_cliente varchar(50),
+    direccion_cliente varchar(50),
     costo_alquiler_mensual INT NOT NULL,
     FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
 );
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS mantenimientos(
     tipo VARCHAR(20),
     fecha DATE,
     hora TIME,
-    observarciones VARCHAR(50),
+    observaciones VARCHAR(50),
     Foreign Key (id_maquina) REFERENCES maquinas(id_maquina),
     Foreign Key (ci_tecnico) REFERENCES tecnicos(ci),
     UNIQUE (ci_tecnico, fecha, hora)

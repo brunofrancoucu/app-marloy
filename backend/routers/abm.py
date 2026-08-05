@@ -5,7 +5,7 @@ from fastapi import APIRouter, Request
 from dal import crud
 
 from exceptions import InternalException
-import sql.models as models # tipado del schema
+import models # tipado del schema
 import dal.crud as crud # SQL ops
 
 router = APIRouter(tags=["ABM"])

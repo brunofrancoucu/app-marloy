@@ -4,9 +4,7 @@ SQL Table / Entry endpoints
 from fastapi import APIRouter
 from dal import crud
 from typing import List
-from sql import models
-
-from sql import models
+import models
 
 router = APIRouter(tags=["Queries"])
 

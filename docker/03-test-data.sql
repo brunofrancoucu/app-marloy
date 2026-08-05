@@ -39,7 +39,7 @@ INSERT IGNORE INTO insumos (id_insumo, descripcion, tipo, precio_unitario, id_pr
 (10, 'Filtros de Papel N°4 (x100)', 'Filtro', 300, 104);
 
 -- 4. Tabla: clientes
-INSERT IGNORE INTO clientes (id_cliente, nombre, dirección, telefono, correo) VALUES
+INSERT IGNORE INTO clientes (id_cliente, nombre, direccion, telefono, correo) VALUES
 (201, 'Oficina Central', 'Av. 18 de Julio 1234', 29011111, 'contacto@oficentral.com'),
 (202, 'Coworking Innova', 'Dr. Luis Alberto de Herrera 3365', 26222222, 'info@innova.uy'),
 (203, 'Estudio Contable Díaz', 'Rincón 454', 29163333, 'admin@diazcontadores.com'),
@@ -54,8 +54,8 @@ INSERT IGNORE INTO tecnicos (ci, nombre, apellido, telefono) VALUES
 (48765432, 'Valentina', 'Sosa', 99888777);
 
 -- 6. Tabla: maquinas
--- Se asume que la dirección de la máquina es la misma que la del cliente, pero podría ser diferente.
-INSERT IGNORE INTO maquinas (id_maquina, modelo, id_cliente, dirección_cliente, costo_alquiler_mensual) VALUES
+-- Se asume que la direccion de la máquina es la misma que la del cliente, pero podría ser diferente.
+INSERT IGNORE INTO maquinas (id_maquina, modelo, id_cliente, direccion_cliente, costo_alquiler_mensual) VALUES
 (301, 'Expressa Pro 2000', 201, 'Av. 18 de Julio 1234', 5000),
 (302, 'LatteMaster 500', 201, 'Av. 18 de Julio 1234', 6500),
 (303, 'FilterCoffee Max', 202, 'Dr. Luis Alberto de Herrera 3365', 4500),
@@ -65,7 +65,7 @@ INSERT IGNORE INTO maquinas (id_maquina, modelo, id_cliente, dirección_cliente,
 (307, 'LatteMaster 500', 205, 'Av. Italia 2345, Sala Profesores', 6800);
 
 -- 7. Tabla: mantenimientos
-INSERT IGNORE INTO mantenimientos (id_mantenimiento, id_maquina, ci_tecnico, tipo, fecha, hora, observarciones) VALUES
+INSERT IGNORE INTO mantenimientos (id_mantenimiento, id_maquina, ci_tecnico, tipo, fecha, hora, observaciones) VALUES
 (401, 301, 45556667, 'Preventivo', '2025-01-15', '08:00:00', 'Limpieza general y descalcificación.'),
 (402, 303, 51112223, 'Correctivo', '2025-02-20', '14:30:00', 'Se reemplazó la bomba de agua.'),
 (403, 302, 45556667, 'Instalación', '2025-03-01', '10:00:00', 'Instalación y configuración inicial.'),

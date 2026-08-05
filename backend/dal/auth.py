@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 from pydantic import BaseModel
 
-from sql import models
+import models
 import dal.crud as crud
 from exceptions import InternalException
 

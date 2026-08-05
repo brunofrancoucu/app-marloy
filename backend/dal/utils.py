@@ -2,12 +2,13 @@
 Utilidades para la aplicacion de gestion comercial backend
 """
 import mysql.connector #pip install mysql-connector-python
+import os
 
-DB_USERS = {
-    "READ": {"user": "reader", "password": "reader_pass", },
-    "WRITE": {"user": "writer", "password": "writer_pass", },
-    "ROOT": {"user": "root", "password": "root", },
-}
+# DB_USERS = {
+#     "READ": {"user": "reader", "password": "reader_pass", },
+#     "WRITE": {"user": "writer", "password": "writer_pass", },
+#     "ROOT": {"user": "root", "password": "root", },
+# }
 
 def db_cursor(crud_op, op = "READ"):
     """
@@ -15,12 +16,12 @@ def db_cursor(crud_op, op = "READ"):
     Simplifica: necesidad de declarar conexion, cursor y close
     """
     conexion = mysql.connector.connect(
-        host='127.0.0.1',
-        user=DB_USERS[op]["user"],
-        password=DB_USERS[op]["password"],
-        database='gestion_comercial',
+        host=os.getenv("DB_HOST", "database"),
+        port=int(os.getenv("DB_PORT", "3306")),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASS"),
+        database=os.getenv("DB_NAME"),
         auth_plugin='mysql_native_password',
-        port=3307
     )
     cursor = conexion.cursor(dictionary=True)
     try:

@@ -5,7 +5,7 @@ import os
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
-from sql import models
+import models
 from dal.auth import AuthPayload
 from dal import auth, crud
 

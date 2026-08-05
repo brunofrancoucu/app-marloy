@@ -4,3 +4,4 @@ mysql-connector-python
 docker
 PyJWT
 python-dotenv
+pydantic

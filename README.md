@@ -10,17 +10,18 @@ Extractos de todas las secciones, requisito previos: [Instalacion Backend](#inst
 
 ```bash
 # Terminal 1 (frontend)
-cd backend
+cd frontend
 npm run dev
 ```
 
-Asumiendo contenedor `mysql-server` ejecutandose de fondo [docker-compose](#ubuntu)
+## Development
+
 ```bash
-# Terminal 2 (backend: api)
-cd frontend
-source venv/bin/activate
-uvicorn main:app --reload
+# docker compose down -v
+docker compose up -d --build
 ```
+
+<!-- Asumiendo contenedor `mysql-server` ejecutandose de fondo [docker-compose](#ubuntu) -->
 [Backend (python + fastapi)](#inicializacion-backend)
 
 # Frontend <small>(React + Vite)</small>
