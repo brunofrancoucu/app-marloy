@@ -1,3 +1,7 @@
+# Arch
+
+Layer first, prio: module path is unambiguous.
+
 # Comunicacion cliente <=> API
 
 ## **Endpoints Publicos**
