@@ -2,52 +2,50 @@
 ABM, Alta baja y modificacion
 """
 from fastapi import APIRouter, Request
-from dal import crud
 
 from exceptions import InternalException
-import models # tipado del schema
-import dal.crud as crud # SQL ops
+import models
 
 router = APIRouter(tags=["ABM"])
 
 @router.put("/proveedor") # UPDATE proveedor
-async def update_proveedor(req: Request, entry: models.Proveedor):
+async def update_proveedor(req: Request, entry: models.Proveedores):
     # Solo usuarios administradores
     if not req.state.user.es_administrador:
         raise InternalException("Operacion requiere rol de administrador.", 401, f"No admin en {req.path}, {entry}", "PUT:/proveedor")
     
     # Actualizar proveedor
-    return crud.update("proveedores", entry, models.Proveedor)
+    return models.Proveedores.update_many(where={"id_proveedor": entry.id_proveedor}, data=entry.model_dump(exclude_unset=True))
 
 @router.put("/maquina") # UPDATE maquina
-async def update_maquina(req: Request, entry: models.Maquina):
+async def update_maquina(req: Request, entry: models.Maquinas):
     # Solo usuarios administradores
     if not req.state.user.es_administrador:
         raise InternalException("Operacion requiere rol de administrador.", 401, f"No admin en {req.path}, {entry}", "PUT:/maquina")
     
     # Actualizar maquina
-    return crud.update("maquinas", entry, models.Maquina)
+    return models.Maquinas.update_many(where={"id_maquina": entry.id_maquina}, data=entry.model_dump(exclude_unset=True))
 
 @router.put("/tecnico") # UPDATE tecnico
-async def update_tecnico(req: Request, entry: models.Tecnico):
+async def update_tecnico(req: Request, entry: models.Tecnicos):
     # Solo usuarios administradores
     if not req.state.user.es_administrador:
         raise InternalException("Operacion requiere rol de administrador.", 401, f"No admin en {req.path}, {entry}", "PUT:/tecnico")
     
     # Actualizar tecnico
-    return crud.update("tecnicos", entry, models.Tecnico)
+    return models.Tecnicos.update_many(where={"ci": entry.ci}, data=entry.model_dump(exclude_unset=True))
 
 @router.put("/insumo") # UPDATE insumo
-async def update_insumo(_: Request, entry: models.Insumo):
+async def update_insumo(_: Request, entry: models.Insumos):
     # Actualizar insumo
-    return crud.update("insumos", entry, models.Insumo)
+    return models.Insumos.update_many(where={"id_insumo": entry.id_insumo}, data=entry.model_dump(exclude_unset=True))
 
 @router.put("/cliente") # UPDATE cliente
-async def update_cliente(_: Request, entry: models.Cliente):
+async def update_cliente(_: Request, entry: models.Clientes):
     # Actualizar cliente
-    return crud.update("clientes", entry, models.Cliente)
+    return models.Clientes.update_many(where={"id_cliente"}, data=entry.model_dump(exclude_unset=True))
 
 @router.put("/mantenimiento") # UPDATE mantenimiento
-async def update_mantenimiento(_: Request, entry: models.Mantenimiento):
+async def update_mantenimiento(_: Request, entry: models.Mantenimientos):
     # Actualizar mantenimiento
-    return crud.update("mantenimientos", entry, models.Mantenimiento)
+    return models.Mantenimientos.update_many(where={"id_mantenimiento": entry.id_mantenimiento}, data=entry.model_dump(exclude_unset=True))

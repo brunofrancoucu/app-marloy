@@ -8,13 +8,12 @@ from dotenv import load_dotenv
 from datetime import datetime
 from pydantic import BaseModel
 
-import models
-import dal.crud as crud
 from exceptions import InternalException
+import models
 
 load_dotenv()  # Cargar variables de entorno desde .env
 
-class AuthPayload(BaseModel):
+class Payload(BaseModel):
     """
     Resultado de autenticación (no autenticado por defecto)
     """
@@ -34,7 +33,7 @@ def check_creds(correo, password):
     TODO: Computa hash de contraseña y compara con hash almacenado en base de datos.
     """
     # (correo, contraseña, es_administrador)
-    user = crud.get_entry("login", "correo", correo, models.Login)
+    user = models.Login.get(where={"correo": correo})[0]
     # if not query or len(query) == 0:
     if not user:
         raise InternalException(f"Usuario: {correo} no existe.", 400, f"Error al autenticar credenciales de {correo}:", "auth.check_creds")
@@ -52,7 +51,7 @@ def get_creds(correo, password):
     """
     return password
     
-def verify(token) -> AuthPayload:
+def verify(token) -> Payload:
     """
     Verifica y revalida el token JWT => devuelve su payload
     """
@@ -61,7 +60,7 @@ def verify(token) -> AuthPayload:
 
     try: 
         payload = jwt.decode(token[7:], os.getenv("JWT_SECRET", "jwt_pwd"), algorithms=[os.getenv("JWT_ALGORITHM")])
-        latest_user = crud.get_entry("login", "correo", payload.get("correo"), models.Login) # update paylodd
+        latest_user = models.Login.get(where={"correo": payload.get("correo")})[0]
     except Exception as e:
         raise InternalException("Token incorrecto, re-inicie sesion.", 401, f"Token expirado para {token}:", "auth.verify")
     
@@ -74,13 +73,13 @@ def verify(token) -> AuthPayload:
     # Verificado, Re generar jwt token (expiración)    
     return gen_jwt(latest_user.correo, latest_user.pwd_hash)
 
-def gen_jwt(correo, contraseña) -> AuthPayload:
+def gen_jwt(correo, contraseña) -> Payload:
     """
     Genera un token JWT para un usuario.
     Verifica credenciales y genera un token JWT si son correctas.
     Devuelve su payload
     """
-    user = crud.get_entry("login", "correo", correo, models.Login)
+    user = models.Login.get(where={"correo": correo})[0]
     
     # if not query or len(query) == 0:
     if not user:
@@ -98,7 +97,7 @@ def gen_jwt(correo, contraseña) -> AuthPayload:
 
     # Generada Exitosamente
     token = f"Bearer {jwt.encode(payload, os.getenv("JWT_SECRET", "jwt_pwd"), algorithm = os.getenv("JWT_ALGORITHM", "HS256"))}"
-    return AuthPayload(
+    return Payload(
         jwt=token,
         is_auth=True,
         es_administrador=user.es_administrador,

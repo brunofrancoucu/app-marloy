@@ -1,6 +1,12 @@
 # Arch
 
-Layer first, prio: module path is unambiguous.
+Backend <small>(Python + FastAPI)</small>. Layer first design, priority: module path is unambiguous (example: `from dal.auth import verify`).
+
+## Memoria
+
+Utilizamos fastapi (alternativa flask, requiere mas configuracion), ejecutamos una instancia con uvicorn, (alternativa: hypercorn, moderno standard ASGI).
+
+Type-safe client (schema models) Tipamos nuestro esquema de datos con `pydantic`, consideramos tiene mejores metodos que una de sus alternativas: `@dataclass` (modificar estructuras, convertir a parametros opcionales o todos requeridos).
 
 # Comunicacion cliente <=> API
 
@@ -39,7 +45,7 @@ curl -X 'GET' 'http://localhost:8000/tecnico/45556667' \
 Registrar usuario
 ```bash
 # Request:
-curl -X 'POST'   'http://localhost:8000/register'   -H 'Content-Type: application/json'   -d '{
+curl -X 'POST'   'http://localhost:8000/user/register'   -H 'Content-Type: application/json'   -d '{
   "correo": "admin@marloy.com",
   "pwd_hash": "marloy1234"
 }'
@@ -52,7 +58,7 @@ Generar token de autenticacion para usuario
 ```bash
 # Request:
 curl -X 'POST' \
-  'http://localhost:8000/login' \
+  'http://localhost:8000/user/login' \
   -H 'Content-Type: application/json' \
   -d '{
   "correo": "admin@marloy.com",

@@ -6,15 +6,16 @@ from fastapi import FastAPI # type: ignore
 from fastapi.middleware.cors import CORSMiddleware
 import openapi as custom_openapi
 
-import backend.middleware as middleware # mdlwr
+import middleware.auth as auth # mdlwr
+import middleware.exceptions as exceptions # mdlwr
 from routers import user, reports, queries, abm
 
 app = FastAPI()
 
 # /docs swagger ui + -H Authorization (button)
 app.openapi = lambda: custom_openapi.custom(app)
-app.middleware("http")(middleware.auth.protected_routes)
-app.middleware("http")(middleware.exceptions.catch_all)
+app.middleware("http")(auth.protected_routes)
+app.middleware("http")(exceptions.catch_all)
 
 # CORS - Cross-Origin Resource Sharing
 origins = ["http://localhost:3000", "http://127.0.0.1:3000",]

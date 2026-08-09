@@ -5,21 +5,21 @@ import os
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
+
+import dal.auth as auth
 import models
-from dal.auth import AuthPayload
-from dal import auth, crud
 
 load_dotenv()  # Cargar variables de entorno desde .env
 
 router = APIRouter(prefix="/user", tags=["Authentication"])
 
-@router.post("/register", response_model=AuthPayload)
+@router.post("/register", response_model=auth.Payload)
 async def register(_: Request, body: models.Login):
-    entry = models.Login(correo=body.correo, pwd_hash=auth.get_creds("", body.pwd_hash))
-    return crud.create("login", entry, models.Login)
+    entry = models.Login(correo=body.correo, pwd_hash=auth.get_creds("", body.pwd_hash), es_administrador=False)
+    return models.Login.create(data=entry.model_dump(exclude_unset=True))
 
 # TODO: samesite, secure, httponly .domain.tld (api y fe)
-@router.post("/login", response_model=AuthPayload)
+@router.post("/login", response_model=auth.Payload)
 async def login(_: Request, body: models.Login):
     payload = auth.gen_jwt(body.correo, body.pwd_hash)
     res = JSONResponse(payload.model_dump())
