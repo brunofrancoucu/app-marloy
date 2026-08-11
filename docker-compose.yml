@@ -12,17 +12,18 @@ services:
       # Maps your local SQL scripts into the container's init directory
       - ./docker:/docker-entrypoint-initdb.d:ro
     ports:
-      - "3306:3306"
+      - '3306:3306'
 
-  consumer_app:
-    build: 
+  backend:
+    build:
       context: ./backend
     environment:
       # Matches the service name 'database' to resolve the host connection
-      DB_HOST: database 
+      DB_HOST: database
       DB_USER: appuser
       DB_PASS: app_secret
       DB_NAME: gestion_comercial
+      ENVIRONMENT: development
       PYTHONPATH: /mysql-orm-lite
     volumes:
       # Mounts your local code to the container for live development
@@ -30,11 +31,18 @@ services:
       # Maps your local package directly into the container's root
       - ../mysql-orm-lite:/mysql-orm-lite
     ports:
-      - "8000:8000"
+      - '8000:8000'
     depends_on:
       - database
 
-# TODO: Frontend
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev
 
 volumes:
   mysql_data:

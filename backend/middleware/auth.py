@@ -10,6 +10,7 @@ import dal.auth as auth
 API_PUBLIC_PATHS = [
     re.compile(r"^/docs$"),
     re.compile(r"^/user/.*$"),
+    re.compile(r"^/user/(login|signup)$"),
     re.compile(r"^/tecnicos$"),
     re.compile(r"^/tecnico/\d+$"), # solo numeros
     re.compile(r"^/openapi\.json$")

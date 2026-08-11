@@ -1,26 +1,35 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Warm coffee-inspired light theme */
+  --background: #fdfbf7;
+  --foreground: #2d241b;
+  --primary: #8c5a2b; /* Roasted Coffee */
+  --primary-hover: #734821;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Rich espresso dark theme */
+    --background: #1a1614;
+    --foreground: #e8e4de;
+    --primary: #c28e5c; /* Lighter Mocha for dark mode */
+    --primary-hover: #d5a373;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Map Next.js fonts to Tailwind utility classes */
+  --font-sans: var(--font-secondary), ui-sans-serif, system-ui;
+  --font-heading: var(--font-primary), ui-sans-serif, system-ui;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }

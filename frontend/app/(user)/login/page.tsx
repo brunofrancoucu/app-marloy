@@ -1,40 +1,38 @@
-import Image from "next/image"
-import LoginForm from "@/components/forms/Login"
+import LoginForm from '@/components/forms/Login'
+import Image from 'next/image'
 
-export default function Home() {
+export default function LoginPage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start"></main>
-      <LoginForm />
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image aria-hidden src="/file.svg" alt="File icon" width={16} height={16} />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image aria-hidden src="/window.svg" alt="Window icon" width={16} height={16} />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image aria-hidden src="/globe.svg" alt="Globe icon" width={16} height={16} />
-          Go to nextjs.org →
-        </a>
-      </footer>
+    <div className="flex min-h-[calc(100vh-80px)] w-full">
+      {/* Left Side Image - Hidden on mobile, 50% width on desktop */}
+      <div className="relative hidden w-1/2 lg:block">
+        <Image
+          src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=1000&auto=format&fit=crop"
+          alt="Fresh espresso pouring into a cup"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/30" />{' '}
+        {/* Dark overlay for aesthetics */}
+      </div>
+
+      {/* Right Side Form */}
+      <div className="flex w-full items-center justify-center p-8 lg:w-1/2">
+        <div className="w-full max-w-md">
+          <div className="mb-8">
+            <h1 className="font-heading text-4xl font-extrabold tracking-tight text-foreground">
+              Welcome back to <span className="text-primary">BrewBase.</span>
+            </h1>
+            <p className="mt-3 text-foreground/60">
+              Enter your credentials to access your store's inventory and staff
+              schedules.
+            </p>
+          </div>
+
+          <LoginForm />
+        </div>
+      </div>
     </div>
   )
 }
