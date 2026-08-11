@@ -4,24 +4,37 @@ import { NextResponse } from "next/server"
 // import { useSearchParams } from "next/navigation"
 // import jwt from "jsonwebtoken"
 
-const SECRET = process.env.JWT_SECRET || "your-secret"
+const SECRET = process.env.JWT_SECRET
+
+async function withAuth(req: NextRequest) {
+  // 1. Check if the user is trying to access a protected route
+  const isProtectedRoute = req.nextUrl.pathname.startsWith("/dashboard");
+
+  // 2. Run on protected routes
+  if (isProtectedRoute) {
+    const cookieStore = await cookies()
+    const token = cookieStore.get("jwtToken")?.value
+    // const searchParams = useSearchParams()
+    // console.log("Intended route param", searchParams.get("redirect"))
+    
+    if (!token) {
+      return NextResponse.redirect(new URL(`/login?redirect=${encodeURIComponent(req.nextUrl.pathname)}`, req.url))
+    }
+    
+    try {
+      // try: validate jwt (use jose)
+      return NextResponse.next()
+    } catch (err) {
+      return NextResponse.redirect(new URL("/login", req.url))
+    }
+  }
+
+  // 3. Rest
+  return NextResponse.next()
+}
 
 export async function middleware(req: NextRequest) {
-  const cookieStore = await cookies()
-  const token = cookieStore.get("jwtToken")?.value
-  // const searchParams = useSearchParams()
-  // console.log("Intended route param", searchParams.get("redirect"))
-
-  if (!token) {
-    return NextResponse.redirect(new URL(`/login?redirect=${encodeURIComponent(req.nextUrl.pathname)}`, req.url))
-  }
-
-  try {
-    // try: validate jwt
-    return NextResponse.next()
-  } catch (err) {
-    return NextResponse.redirect(new URL("/login", req.url))
-  }
+  withAuth(req)
 }
 
 export const config = {
