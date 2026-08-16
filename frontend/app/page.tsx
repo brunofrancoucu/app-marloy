@@ -23,7 +23,7 @@ export default function Home() {
             management platform.
           </p>
 
-          <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
+          <div className="mt-10 flex flex-col justify-center items-center gap-4 sm:flex-row lg:justify-start">
             <Link
               href="/signup"
               className="rounded-full bg-primary px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:-translate-y-1 hover:bg-primary-hover hover:shadow-xl"
