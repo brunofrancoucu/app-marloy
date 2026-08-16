@@ -1,17 +1,25 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useAppStore } from '@/store'
+import { useShallow } from 'zustand/shallow'
 
 export default function UserMenu({
   userName = 'Manager',
 }: {
   userName?: string
 }) {
-  const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
+  const [isOpen, setIsOpen, setUser] = useAppStore(
+    useShallow((state) => [
+      state.settings.isMenuOpen,
+      state.setSetting,
+      state.setUser,
+    ]),
+  )
 
   // Close dropdown if clicking outside of it
   useEffect(() => {
@@ -20,7 +28,7 @@ export default function UserMenu({
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false)
+        setIsOpen('isMenuOpen', false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -35,9 +43,9 @@ export default function UserMenu({
         credentials: 'include',
       })
 
-      setIsOpen(false)
+      setIsOpen('isMenuOpen', false)
+      setUser(null)
       router.push('/')
-      router.refresh() // Forces the Navbar to re-evaluate the auth state
     } catch (error) {
       console.error('Logout failed:', error)
     }
@@ -46,7 +54,7 @@ export default function UserMenu({
   return (
     <div className="relative" ref={dropdownRef}>
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setIsOpen('isMenuOpen', !isOpen)}
         className="flex items-center gap-2 rounded-full border border-foreground/10 bg-background p-1 pr-3 transition-colors hover:bg-foreground/5 focus:outline-none focus:ring-2 focus:ring-primary"
       >
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
@@ -75,14 +83,14 @@ export default function UserMenu({
           <div className="p-1">
             <Link
               href="/dashboard"
-              onClick={() => setIsOpen(false)}
+              onClick={() => setIsOpen('isMenuOpen', false)}
               className="block rounded-lg px-4 py-2 text-sm text-foreground hover:bg-foreground/5"
             >
               Dashboard
             </Link>
             <Link
               href="/settings"
-              onClick={() => setIsOpen(false)}
+              onClick={() => setIsOpen('isMenuOpen', false)}
               className="block rounded-lg px-4 py-2 text-sm text-foreground hover:bg-foreground/5"
             >
               Account Settings

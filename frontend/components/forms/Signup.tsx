@@ -3,8 +3,10 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useAppStore } from '@/store'
 
 const SignupForm: React.FC = () => {
+  const setUser = useAppStore((state) => state.setUser)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -30,12 +32,11 @@ const SignupForm: React.FC = () => {
 
       if (response.ok) {
         // Option A: Stay on the current page and close the modal
+        setUser({ email })
         router.back()
-        router.refresh()
 
         // Option B (What you had before): Go straight to the dashboard
         // router.push("/dashboard");
-        // router.refresh();
       } else {
         const errorData = await response.json()
         setError(errorData.error || 'Signup failed. Please try again.')

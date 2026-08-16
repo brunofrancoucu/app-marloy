@@ -8,9 +8,12 @@ export default function Modal({ children }: { children: React.ReactNode }) {
   const wrapper = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
-  const onDismiss = useCallback(() => {
+  // const onDismiss = useCallback(() => {
+  //   router.back()
+  // }, [router])
+  const onDismiss = () => {
     router.back()
-  }, [router])
+  }
 
   const onClick = useCallback(
     (e: MouseEvent) => {

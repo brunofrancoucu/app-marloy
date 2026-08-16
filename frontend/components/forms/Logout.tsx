@@ -1,8 +1,10 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useAppStore } from '../../store'
 
 const Logout: React.FC = () => {
+  const setUser = useAppStore((state) => state.setUser)
   const router = useRouter()
 
   const logout = async () => {
@@ -13,6 +15,7 @@ const Logout: React.FC = () => {
     if (res.ok) {
       const data = await res.json()
       console.log('Logout: ', data)
+      setUser(null)
       router.push('/login')
     }
   }

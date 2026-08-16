@@ -1,15 +1,24 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { useAppStore } from '@/store'
+import { useShallow } from 'zustand/shallow'
+// import { useAuth } from '@/context/AuthContext' // 1. Import your auth hook
 
 const LoginForm: React.FC = () => {
+  const [user, setUser] = useAppStore(
+    useShallow((state) => [state.user, state.setUser]),
+  )
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+
   const router = useRouter()
+  const searchParams = useSearchParams()
+  // const { checkAuth } = useAuth() // 2. Destructure the checkAuth function
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -20,19 +29,28 @@ const LoginForm: React.FC = () => {
       const response = await fetch('/api/user/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ correo: username, pwd_hash: password }),
       })
 
       if (response.ok) {
-        // Option A: Stay on the current page and close the modal
-        router.back()
-        router.refresh()
+        // 3. Update the global state first so the Navbar instantly changes
+        // await checkAuth()
 
-        // Option B (What you had before): Go straight to the dashboard
-        // router.push("/dashboard");
-        // router.refresh();
+        // 4. Handle navigation without using router.refresh()
+        setUser({ email: username })
+        const redirectUrl = searchParams.get('redirect')
+
+        if (redirectUrl) {
+          // router.back()
+          // window.location.href = redirectUrl
+          router.push(redirectUrl)
+          // setTimeout(() => {
+          // }, 1) // Next render
+        } else {
+          router.back() // This will now successfully close the modal!
+        }
       } else {
+        setUser(null)
         const errorData = await response.json()
         setError(errorData.error || 'Invalid credentials. Please try again.')
       }
@@ -43,6 +61,8 @@ const LoginForm: React.FC = () => {
       setIsLoading(false)
     }
   }
+
+  // ... (return statement remains exactly the same)
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-6">
