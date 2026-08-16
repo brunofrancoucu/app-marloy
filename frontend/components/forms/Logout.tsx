@@ -14,7 +14,6 @@ const Logout: React.FC = () => {
     })
     if (res.ok) {
       const data = await res.json()
-      console.log('Logout: ', data)
       setUser(null)
       router.push('/login')
     }

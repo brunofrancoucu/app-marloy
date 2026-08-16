@@ -82,22 +82,19 @@ export default async function DashboardPage() {
             { label: 'Total to Charge', align: 'right' },
           ]}
           data={clientesData}
-          renderRow={(client, idx) => {
-            console.log(client.total_a_cobrar)
-            return (
-              <tr key={idx} className="transition-colors hover:bg-foreground/5">
-                <td className="p-4 font-medium text-foreground">
-                  #{client.id_cliente}
-                </td>
-                <td className="p-4 text-right font-bold text-primary">
-                  {/* Safe formatting: Fallback to 0 if undefined */}$
-                  {(client.total_a_cobrar || 0).toLocaleString('es-UY', {
-                    minimumFractionDigits: 2,
-                  })}
-                </td>
-              </tr>
-            )
-          }}
+          renderRow={(client, idx) => (
+            <tr key={idx} className="transition-colors hover:bg-foreground/5">
+              <td className="p-4 font-medium text-foreground">
+                #{client.id_cliente}
+              </td>
+              <td className="p-4 text-right font-bold text-primary">
+                {/* Safe formatting: Fallback to 0 if undefined */}$
+                {(client.total_a_cobrar || 0).toLocaleString('es-UY', {
+                  minimumFractionDigits: 2,
+                })}
+              </td>
+            </tr>
+          )}
         />
 
         <DashboardTable

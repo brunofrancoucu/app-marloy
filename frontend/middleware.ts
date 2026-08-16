@@ -14,8 +14,6 @@ async function withAuth(req: NextRequest) {
   if (isProtectedRoute) {
     const cookieStore = await cookies()
     const token = cookieStore.get('jwtToken')?.value
-    // const searchParams = useSearchParams()
-    // console.log("Intended route param", searchParams.get("redirect"))
 
     if (!token) {
       return NextResponse.redirect(

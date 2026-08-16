@@ -13,8 +13,6 @@ export default function AuthNav() {
   )
   const [isLoading, setIsLoading] = useState(true)
 
-  console.log(user)
-
   // 1. Hydrate Zustand on initial app load
   useEffect(() => {
     const initAuth = async () => {
