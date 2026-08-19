@@ -1,0 +1,102 @@
+{
+  "navbar": {
+    "inventory": "Inventory",
+    "staff": "Staff"
+  },
+  "home": {
+    "title_start": "Master Your",
+    "title_highlight": "Coffee Shop",
+    "title_end": "Operations.",
+    "description": "From raw bean inventory tracking to complex barista scheduling, streamline every drop of your daily operations with our all-in-one management platform.",
+    "cta_trial": "Start Free Trial",
+    "cta_demo": "Book a Demo"
+  },
+  "footer": {
+    "rights": "© 2026 BrewBase. All rights reserved."
+  },
+  "auth": {
+    "login": "Login",
+    "dashboard": "Dashboard",
+    "settings": "Account Settings",
+    "signout": "Sign out",
+    "manager_default": "Manager"
+  },
+  "dashboard": {
+    "title": "Operations Dashboard",
+    "subtitle": "Live metrics and reports from your fleet.",
+    "stats": {
+      "revenue_title": "Expected Revenue",
+      "revenue_desc": "From machine rentals & usage",
+      "fleet_title": "Largest Fleet",
+      "fleet_desc": "Client with most machines",
+      "interventions_title": "Total Interventions",
+      "interventions_desc": "Maintenance jobs completed",
+      "consumable_title": "Top Consumable",
+      "consumable_desc": "Highest usage volume"
+    },
+    "tables": {
+      "invoicing_title": "Monthly Invoicing",
+      "invoicing_desc": "Billing totals for the previous month.",
+      "fleet_title": "Fleet Distribution",
+      "fleet_desc": "Clients with the most machines deployed.",
+      "consumable_title": "Consumable Usage",
+      "consumable_desc": "Total items used and unit pricing.",
+      "tech_title": "Technician Performance",
+      "tech_desc": "Top staff by maintenance jobs completed.",
+      "cols": {
+        "client_id": "Client ID",
+        "total_charge": "Total to Charge",
+        "machine_count": "Machine Count",
+        "item_id": "Item ID",
+        "unit_price": "Unit Price",
+        "qty_used": "Quantity Used",
+        "tech_ci": "Technician CI",
+        "services_performed": "Services Performed"
+      }
+    }
+  },
+  "loginPage": {
+    "title_start": "Welcome back to",
+    "title_highlight": "BrewBase.",
+    "description": "Enter your credentials to access your store's inventory and staff schedules."
+  },
+  "signupPage": {
+    "title_start": "Start your",
+    "title_highlight": "BrewBase",
+    "title_end": "journey.",
+    "description": "Create your manager account today and take full control of your shop's daily operations."
+  },
+  "loginModal": {
+    "title": "Manager Access",
+    "description": "Please sign in to manage your BrewBase dashboard."
+  },
+  "signupModal": {
+    "title": "Join BrewBase",
+    "description": "Create an account to streamline your coffee operations."
+  },
+  "loginForm": {
+    "email_label": "Email Address",
+    "email_placeholder": "manager@brewbase.com",
+    "password_label": "Password",
+    "password_placeholder": "••••••••",
+    "forgot_password": "Forgot password?",
+    "btn_loading": "Signing in...",
+    "btn_submit": "Sign In",
+    "no_account": "Don't have an account?",
+    "sign_up_link": "Sign up",
+    "err_invalid": "Invalid credentials. Please try again.",
+    "err_network": "Network error. Please check your connection."
+  },
+  "signupForm": {
+    "email_label": "Email Address",
+    "email_placeholder": "manager@brewbase.com",
+    "password_label": "Create Password",
+    "password_placeholder": "••••••••",
+    "btn_loading": "Creating account...",
+    "btn_submit": "Create Account",
+    "has_account": "Already have an account?",
+    "sign_in_link": "Sign in",
+    "err_failed": "Signup failed. Please try again.",
+    "err_network": "Network error. Please check your connection."
+  }
+}
