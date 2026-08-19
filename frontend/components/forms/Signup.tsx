@@ -1,17 +1,24 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useAppStore } from '@/store'
+import { useShallow } from 'zustand/shallow'
+import { useCurrentLang } from '@/lib/services/language/hooks'
 
-const SignupForm: React.FC = () => {
-  const setUser = useAppStore((state) => state.setUser)
-  const [email, setEmail] = useState('')
+export default function LoginForm({ dict }: { dict: any }) {
+  const [user, setUser] = useAppStore(
+    useShallow((state) => [state.user, state.setUser]),
+  )
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const lang = useCurrentLang()
+
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -19,31 +26,30 @@ const SignupForm: React.FC = () => {
     setError('')
 
     try {
-      // Adjust this endpoint to match your FastAPI signup route
-      const response = await fetch('/api/user/signup', {
+      const response = await fetch('/api/user/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          correo: email,
-          pwd_hash: password,
-          es_administrador: false,
-        }),
+        body: JSON.stringify({ correo: username, pwd_hash: password }),
       })
 
       if (response.ok) {
-        // Option A: Stay on the current page and close the modal
-        setUser({ email })
-        router.back()
+        setUser({ email: username })
+        const redirectUrl = searchParams.get('redirect')
 
-        // Option B (What you had before): Go straight to the dashboard
-        // router.push("/dashboard");
+        if (redirectUrl) {
+          router.push(redirectUrl)
+        } else {
+          router.back()
+        }
       } else {
+        setUser(null)
         const errorData = await response.json()
-        setError(errorData.error || 'Signup failed. Please try again.')
+        // Use dictionary fallback if API doesn't provide a specific error message
+        setError(errorData.error || dict.err_invalid)
       }
     } catch (err) {
-      console.error('Signup error:', err)
-      setError('Network error. Please check your connection.')
+      console.error('Login error:', err)
+      setError(dict.err_network)
     } finally {
       setIsLoading(false)
     }
@@ -59,36 +65,44 @@ const SignupForm: React.FC = () => {
 
       <div className="space-y-1.5">
         <label
-          htmlFor="email"
+          htmlFor="username"
           className="text-sm font-semibold text-foreground/80"
         >
-          Email Address
+          {dict.email_label}
         </label>
         <input
           type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          id="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           className="w-full rounded-xl border border-foreground/10 bg-transparent p-3.5 text-foreground transition-all placeholder:text-foreground/30 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          placeholder="manager@brewbase.com"
+          placeholder={dict.email_placeholder}
           required
         />
       </div>
 
       <div className="space-y-1.5">
-        <label
-          htmlFor="password"
-          className="text-sm font-semibold text-foreground/80"
-        >
-          Create Password
-        </label>
+        <div className="flex items-center justify-between">
+          <label
+            htmlFor="password"
+            className="text-sm font-semibold text-foreground/80"
+          >
+            {dict.password_label}
+          </label>
+          <button
+            type="button"
+            className="text-xs font-medium text-primary hover:text-primary-hover"
+          >
+            {dict.forgot_password}
+          </button>
+        </div>
         <input
           type="password"
           id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full rounded-xl border border-foreground/10 bg-transparent p-3.5 text-foreground transition-all placeholder:text-foreground/30 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          placeholder="••••••••"
+          placeholder={dict.password_placeholder}
           required
         />
       </div>
@@ -98,20 +112,18 @@ const SignupForm: React.FC = () => {
         disabled={isLoading}
         className="mt-2 flex w-full justify-center rounded-xl bg-primary p-4 text-sm font-bold text-white transition-all hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background disabled:cursor-not-allowed disabled:opacity-70"
       >
-        {isLoading ? 'Creating account...' : 'Create Account'}
+        {isLoading ? dict.btn_loading : dict.btn_submit}
       </button>
 
       <p className="mt-4 text-center text-sm text-foreground/60">
-        Already have an account?{' '}
+        {dict.no_account}{' '}
         <Link
-          href="/login"
+          href={`/${lang}/signup`}
           className="font-semibold text-primary transition-colors hover:text-primary-hover"
         >
-          Sign in
+          {dict.sign_up_link}
         </Link>
       </p>
     </form>
   )
 }
-
-export default SignupForm

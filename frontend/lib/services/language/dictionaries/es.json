@@ -1,0 +1,102 @@
+{
+  "navbar": {
+    "inventory": "Inventario",
+    "staff": "Personal"
+  },
+  "home": {
+    "title_start": "Domina las Operaciones",
+    "title_highlight": "de tu Cafetería",
+    "title_end": ".",
+    "description": "Desde el seguimiento del inventario de granos crudos hasta la compleja programación de los baristas, optimiza cada gota de tus operaciones diarias con nuestra plataforma integral.",
+    "cta_trial": "Prueba Gratuita",
+    "cta_demo": "Reservar Demo"
+  },
+  "footer": {
+    "rights": "© 2026 BrewBase. Todos los derechos reservados."
+  },
+  "auth": {
+    "login": "Iniciar Sesión",
+    "dashboard": "Panel de Control",
+    "settings": "Configuración de Cuenta",
+    "signout": "Cerrar Sesión",
+    "manager_default": "Gerente"
+  },
+  "dashboard": {
+    "title": "Panel de Operaciones",
+    "subtitle": "Métricas en vivo y reportes de tu flota.",
+    "stats": {
+      "revenue_title": "Ingresos Esperados",
+      "revenue_desc": "Por alquiler y uso de máquinas",
+      "fleet_title": "Flota Principal",
+      "fleet_desc": "Cliente con más máquinas",
+      "interventions_title": "Total de Intervenciones",
+      "interventions_desc": "Mantenimientos completados",
+      "consumable_title": "Insumo Principal",
+      "consumable_desc": "Mayor volumen de uso"
+    },
+    "tables": {
+      "invoicing_title": "Facturación Mensual",
+      "invoicing_desc": "Totales de facturación del mes anterior.",
+      "fleet_title": "Distribución de Flota",
+      "fleet_desc": "Clientes con la mayor cantidad de máquinas desplegadas.",
+      "consumable_title": "Uso de Insumos",
+      "consumable_desc": "Total de artículos usados y precio unitario.",
+      "tech_title": "Rendimiento Técnico",
+      "tech_desc": "Personal destacado por mantenimientos completados.",
+      "cols": {
+        "client_id": "ID Cliente",
+        "total_charge": "Total a Cobrar",
+        "machine_count": "Cant. de Máquinas",
+        "item_id": "ID Insumo",
+        "unit_price": "Precio Unitario",
+        "qty_used": "Cantidad Usada",
+        "tech_ci": "CI del Técnico",
+        "services_performed": "Servicios Realizados"
+      }
+    }
+  },
+  "loginPage": {
+    "title_start": "Bienvenido de nuevo a",
+    "title_highlight": "BrewBase.",
+    "description": "Ingresa tus credenciales para acceder al inventario y a los horarios del personal de tu tienda."
+  },
+  "signupPage": {
+    "title_start": "Comienza tu viaje en",
+    "title_highlight": "BrewBase",
+    "title_end": ".",
+    "description": "Crea tu cuenta de gerente hoy y toma el control total de las operaciones diarias de tu cafetería."
+  },
+  "loginModal": {
+    "title": "Acceso de Gerente",
+    "description": "Por favor, inicia sesión para gestionar tu panel de BrewBase."
+  },
+  "signupModal": {
+    "title": "Únete a BrewBase",
+    "description": "Crea una cuenta para optimizar las operaciones de tu cafetería."
+  },
+  "loginForm": {
+    "email_label": "Correo Electrónico",
+    "email_placeholder": "gerente@brewbase.com",
+    "password_label": "Contraseña",
+    "password_placeholder": "••••••••",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "btn_loading": "Iniciando sesión...",
+    "btn_submit": "Iniciar Sesión",
+    "no_account": "¿No tienes una cuenta?",
+    "sign_up_link": "Regístrate",
+    "err_invalid": "Credenciales inválidas. Por favor, intenta de nuevo.",
+    "err_network": "Error de red. Por favor, verifica tu conexión."
+  },
+  "signupForm": {
+    "email_label": "Correo Electrónico",
+    "email_placeholder": "gerente@brewbase.com",
+    "password_label": "Crear Contraseña",
+    "password_placeholder": "••••••••",
+    "btn_loading": "Creando cuenta...",
+    "btn_submit": "Crear Cuenta",
+    "has_account": "¿Ya tienes una cuenta?",
+    "sign_in_link": "Inicia sesión",
+    "err_failed": "El registro falló. Por favor, intenta de nuevo.",
+    "err_network": "Error de red. Por favor, verifica tu conexión."
+  }
+}

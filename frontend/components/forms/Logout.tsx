@@ -2,10 +2,12 @@
 
 import { useRouter } from 'next/navigation'
 import { useAppStore } from '../../store'
+import { useCurrentLang } from '@/lib/services/language/hooks'
 
 const Logout: React.FC = () => {
   const setUser = useAppStore((state) => state.setUser)
   const router = useRouter()
+  const lang = useCurrentLang()
 
   const logout = async () => {
     const res = await fetch('/api/user/logout', {
@@ -15,7 +17,7 @@ const Logout: React.FC = () => {
     if (res.ok) {
       const data = await res.json()
       setUser(null)
-      router.push('/login')
+      router.push(`/${lang}/`) // Localized redirect
     }
   }
   return (
