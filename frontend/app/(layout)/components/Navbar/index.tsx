@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import AuthNav from './AuthNav'
+import ThemeToggle from './ThemeToggle'
 
 export default function Navbar() {
   return (
@@ -27,6 +28,9 @@ export default function Navbar() {
 
           {/* Conditional Auth Rendering */}
           <AuthNav />
+
+          {/* Theme toggle */}
+          <ThemeToggle />
         </div>
       </div>
     </nav>

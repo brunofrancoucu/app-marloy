@@ -29,9 +29,39 @@ export default function RootLayout({
   children: React.ReactNode
   modal: React.ReactNode
 }) {
+  // This raw JavaScript runs before the browser paints.
+  // It reads the cookie directly on the client side.
+  const themeScript = `
+    (function() {
+      try {
+        // 1. Check for a cookie named 'theme'
+        var match = document.cookie.match(new RegExp('(^| )theme=([^;]+)'));
+        var theme = match ? match[2] : null;
+        
+        // 2. Fallback to the user's operating system preference if no cookie exists
+        if (!theme) {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        // 3. Apply the class to the <html> tag instantly
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {}
+    })();
+  `
+
   return (
-    <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
-      {/* <ThemeProvider> */}
+    <html
+      lang="en"
+      className={`${inter.variable} ${jakarta.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className={`flex min-h-screen flex-col font-sans antialiased`}>
         <Navbar />
         <main className="flex-grow">{children}</main>

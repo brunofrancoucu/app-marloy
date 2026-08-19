@@ -8,14 +8,13 @@
   --primary-hover: #734821;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Rich espresso dark theme */
-    --background: #1a1614;
-    --foreground: #e8e4de;
-    --primary: #c28e5c; /* Lighter Mocha for dark mode */
-    --primary-hover: #d5a373;
-  }
+/* Apply dark theme variables when the .dark class is present */
+.dark {
+  /* Rich espresso dark theme */
+  --background: #1a1614;
+  --foreground: #e8e4de;
+  --primary: #c28e5c; /* Lighter Mocha for dark mode */
+  --primary-hover: #d5a373;
 }
 
 @theme inline {
