@@ -58,8 +58,9 @@ def verify(token) -> Payload:
     if not token or len(token) == 0:
         raise InternalException("Token no proporcionado o inválido.", 401, f"Sin token: {token}:", "auth.verify")
 
+    print(f"Verificando token: {os.getenv("JWT_SECRET", "jwt_pwd")}")
     try: 
-        payload = jwt.decode(token[7:], os.getenv("JWT_SECRET", "jwt_pwd"), algorithms=[os.getenv("JWT_ALGORITHM")])
+        payload = jwt.decode(token[7:], os.getenv("JWT_SECRET", "jwt_pwd"), algorithms=[os.getenv("JWT_ALGORITHM", "HS256")])
         latest_user = models.Login.get(where={"correo": payload.get("correo")})[0]
     except Exception as e:
         raise InternalException("Token incorrecto, re-inicie sesion.", 401, f"Token expirado para {token}:", "auth.verify")

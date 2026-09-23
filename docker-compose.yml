@@ -21,7 +21,7 @@ services:
       # Matches the service name 'database' to resolve the host connection
       DB_HOST: database
       DB_USER: appuser
-      DB_PASS: app_secret
+      DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: gestion_comercial
       ENVIRONMENT: development
       PYTHONPATH: /mysql-orm-lite
@@ -43,6 +43,10 @@ services:
       - ./frontend:/app
       - /app/node_modules
     command: npm run dev
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ALGORITHM: HS256
+      JWT_EXPIRATION: 38400 # 12 horas
 
 volumes:
   mysql_data:
